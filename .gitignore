@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+
+# Ignore the keys after the stub has been added.
+*APIKeys.java
