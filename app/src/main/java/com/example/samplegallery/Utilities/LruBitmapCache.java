@@ -44,6 +44,6 @@ class LruBitmapCache extends LruCache<String, Bitmap>
         final int screenBytes = screenHeight * screenWidth * 4;
 
         // 3 pages worth of images!
-        return screenBytes * 4;
+        return screenBytes * 3;
     }
 }
