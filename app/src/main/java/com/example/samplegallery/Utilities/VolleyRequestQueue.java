@@ -28,7 +28,7 @@ public class VolleyRequestQueue {
                 new LruBitmapCache(LruBitmapCache.getCacheSize(context)));
     }
 
-    private RequestQueue getRequestQueue() {
+    public RequestQueue getRequestQueue() {
         if (reqQueue == null) {
             // mContext mustn't be null for the following instruction to execute.
             if (mContext == null) {
