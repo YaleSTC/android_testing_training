@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SampleGalery</string>
+    <string name="flickr_base_url">https://api.flickr.com/services/rest/?</string>
+    <string name="yale_album_id">12208415@N08</string>
 </resources>
