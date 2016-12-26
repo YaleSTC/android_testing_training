@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,9 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.samplegallery.Utilities.VolleyErrorListener;
 import com.example.samplegallery.Utilities.VolleyRequestQueue;
+import com.example.samplegallery.Utilities.CallbackNetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,10 +44,15 @@ public class PhotoBlowupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout rootView = (RelativeLayout) inflater.
                 inflate(R.layout.photo_blowup_fragment, container, false);
-        final NetworkImageView img = (NetworkImageView) rootView.findViewById(R.id.photo_blowup);
+        final CallbackNetworkImageView img =
+                (CallbackNetworkImageView) rootView.findViewById(R.id.photo_blowup);
         final TextView photoTitleView = (TextView) rootView.findViewById(R.id.photo_title);
         final TextView photoDescriptionView =
                 (TextView) rootView.findViewById(R.id.photo_description);
+        // make sure that initially the texts are not visible
+        photoTitleView.setVisibility(View.INVISIBLE);
+        photoDescriptionView.setVisibility(View.INVISIBLE);
+
         // create a request for photo title
         JsonObjectRequest photoInfoRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -91,6 +97,15 @@ public class PhotoBlowupFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        // make sure that the descriptions are visible after the photo has been
+                        // loaded
+                        img.addSuccessListener(new CallbackNetworkImageView.ImageSuccessfullyLoadedListener() {
+                            @Override
+                            public void onImageLoaded() {
+                                photoDescriptionView.setVisibility(View.VISIBLE);
+                                photoTitleView.setVisibility(View.VISIBLE);
+                            }
+                        });
 
                         // finally set the url for the image
                         img.setImageUrl(
