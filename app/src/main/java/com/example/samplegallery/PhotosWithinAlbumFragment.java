@@ -12,14 +12,15 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.samplegallery.Utilities.VolleyErrorListener;
 import com.example.samplegallery.Utilities.VolleyRequestQueue;
+import com.example.samplegallery.Utilities.CallbackNetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,8 +119,26 @@ public class PhotosWithinAlbumFragment extends Fragment {
                                     rootView = (RelativeLayout) convertView;
                                 }
 
-                                NetworkImageView img = (NetworkImageView) rootView.getChildAt(1);
-                                img.setImageDrawable(null);
+                                final ProgressBar pb = (ProgressBar) rootView.getChildAt(0);
+                                final CallbackNetworkImageView img =
+                                        (CallbackNetworkImageView) rootView.getChildAt(1);
+
+                                // after the image is successfully loaded, hide the progress bar.
+                                img.addSuccessListener(new CallbackNetworkImageView.ImageSuccessfullyLoadedListener() {
+                                    @Override
+                                    public void onImageLoaded() {
+                                        pb.setVisibility(View.INVISIBLE);
+                                        img.setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+                                // switch the visibility of elts if an element is being loaded!
+                                if (!photosInfo.get(position).first.equals(img.getImageUrl())) {
+                                    img.setVisibility(View.INVISIBLE);
+                                    pb.setVisibility(View.VISIBLE);
+                                }
+
+                                // instantiate the image url!
                                 img.setImageUrl(
                                         photosInfo.get(position).first,
                                         VolleyRequestQueue
