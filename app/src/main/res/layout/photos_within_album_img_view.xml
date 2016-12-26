@@ -6,16 +6,13 @@
     <!--TROLOLO HUGE HACK! THE SPINNER NEVER STOPS SPINNING, BUT DOES GET COVERED UP! -->
     <!--PERFORMANCE IS REALLY BAD HERE!-->
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:layout_centerInParent="true"/>
+        style="@style/SmallProgreessBar"/>
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/photos_within_album_img_view"
         android:layout_width="100sp"
         android:layout_height="100sp"
         android:padding="5sp"
-        android:scaleType="centerCrop"/>
+        style="@style/ImageView"/>
 
 </RelativeLayout>

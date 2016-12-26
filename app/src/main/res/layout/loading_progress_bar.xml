@@ -15,10 +15,7 @@
         android:padding="20sp">
 
         <ProgressBar
-            style="@android:style/Widget.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            style="@style/BigProgreessBar"
             android:layout_margin="5sp" />
 
         <TextView
