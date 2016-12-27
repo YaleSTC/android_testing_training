@@ -77,7 +77,7 @@ Please follow the setup steps outlined [here](https://developer.android.com/trai
 Please read through this rather short document which outlines [how to write simple unit tests](https://developer.android.com/training/testing/unit-testing/local-unit-tests.html). We will use this knowledge to write a few simple tests for the `getCacheSize` method within `LruBitmapCache`. This should be simple and short, but will give you an idea of how such testing code looks like. 
 
 0. Make sure that you have set up the testing environment correctly (does the project compile and the dependencies are added?). You might have to clean resync gradle.
-1. Go to Android Studio and find the `com.example.galery.samplegalery (test)` package. Take a look at the file present in it -- it defines the most basic template for writing unit tests. 
+1. Go to Android Studio and find the `com.example.samplegallery (test)` package. Take a look at the file present in it -- it defines the most basic template for writing unit tests. 
 2. Modify the file (or make a new one) named `LruBitmapCacheTest.java`. Notice the naming convention -- whenever you will be writing Java Classes (or even methods within existing classes), you will have to also write tests for what you have written! The names of files containing tests must be the same as the original file with "Test" added on. 
 3. Write a test for `LruBitmapCache.getCacheSize(Context mContext)`. Notice that you will have to
    * mock the `Context` object -- please use Mockito. 
@@ -89,7 +89,7 @@ Congratz! you've just written your first Android test! If you would like to comp
 
 Notice that up until now we have only tested a *non-static, public member function* which is almost the simplest test we could have written (well, we also mocked an object so I guess they get easier, but not by much). There are many other intricacies that come up when we test, of which the most important are:
 
-1. Testing private class members. Sometimes a class has a lot of helper, private functions that logically should not be revealed to the user of the class. Testing such functions uses the most hated and loved feature of java: reflection. Let's take a look at how this is done. 
+1. Testing private class members. Sometimes a class has a lot of private functions that must be tested (there seems to be a lot of conflict among Java (and not only) community as to whether private functions should be tested at all, how to structure code to avoid private methods etc., but here I just want to show you that this may be done). Testing such functions uses the most hated and loved feature of java: reflection. Let's take a look at how this is done. 
 
     * First, read this to understand [what the hell is reflection and why is it useful?](http://stackoverflow.com/questions/37628/what-is-reflection-and-why-is-it-useful). NOTE: The concept itself is super important and rather meta, but it is good to have a working understanding. If you'd like to dig deeper, you totally can using the Oracle articles on [reflection](http://docs.oracle.com/javase/tutorial/reflect/index.html) and [introspection](http://web.archive.org/web/20090226224821/http://java.sun.com/docs/books/tutorial/javabeans/introspection/index.html).
     * Second, read [this stack overflow post](http://stackoverflow.com/a/37632/7009520) explicitly showing you how to reflect to invoke (and so test) a private class function.
@@ -112,9 +112,9 @@ class MyTestClass {
 }
 ```
 
-   Of course, this example is silly but the problem is that one cannot simply mock the return value of `getInt()` without changing the code. This is one of the reasons static functions that are relevant to general logic of code are [considered harmful](https://testing.googleblog.com/2008/12/static-methods-are-death-to-testability.html) and "bad taste."
+   Of course, this example is silly but the problem is that one cannot simply mock the return value of `getInt()` without changing the code. This is one of the reasons static functions that are relevant to general logic of code are [considered harmful](https://testing.googleblog.com/2008/12/static-methods-are-death-to-testability.html), "bad taste" and in general an "anti-pattern."
 
-   To circumvent this problem, I will in general discourage you from writting static methods, but sometimes it is necesary (for instance when a 3rd party library uses such). We will deal with those using [PowerMockito](https://github.com/powermock/powermock/wiki/MockitoUsage) with simple code usage shown [here](http://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito). We will not exercise this now since this will come up very rarely and we will tackle these problems as they appear.
+   Even so, sometimes we HAVE TO test such functions (for instance when we are dealing with legacy code that we don't want to refactor). To circumvent this problem, I will in general discourage you from writting static methods, but sometimes it is necesary (for instance when a 3rd party library uses such). We will deal with those using [PowerMockito](https://github.com/powermock/powermock/wiki/MockitoUsage) with simple code usage shown [here](http://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito). We will not exercise this now since this will come up very rarely and we will tackle these problems as they appear.
 
 SOLUTION: `Testing` branch.
 
@@ -128,9 +128,11 @@ I know that there is a ton of information within this tutorial already. That is 
 
 #### Automatized UI Tests
 
-Automatized UI tests have been around for a while, but the newest "Toy" for doing these is Espresso, released by Google in 2016. One thing that must be said about automatized UI testing is that it is rather crude and requires a lot of code to test relatively basic things. In this part, there is no exercise -- I'd like you to read [this article by Google](https://developer.android.com/training/testing/ui-testing/espresso-testing.html). Then, please visit the `UITest` branch of the project and see a sample test that I have written. The test illustrates everything the article mentions!
+Automatized UI tests have been around for a while, but the newest "Toy" for doing these is Espresso, released by Google in 2016. One thing that must be said about automatized UI testing is that it is rather crude and requires a lot of code to test relatively basic things. In this part, there is no exercise -- I'd like you to read [this article by Google](https://developer.android.com/training/testing/ui-testing/espresso-testing.html). Then, please visit the `UITest` branch of the project and see a sample test that I have written. The test illustrates everything the article mentions and shows how and when reflection is useful (expect for testing private methods of course).
 
-You should notice that I am using functions that aren't very well documented within Volley such as `addRequestFinishedListener()` for `RequestQueue`. Whenever you need any such functions, a good practice is to look within Google source code (all of android is open source!). Bear in mind that any undocumented code may be subject to changes that are not announced and such practice might lead to hardship in upgrading libraries. That said, the current function used is the basis of the whole `RequestQueue` class and is likely safe to use. 
+Few notes considering the test: It is not the most basic of tests. We create our own `ActivityTestRule` to explicitly control when the web requests are fulfilled, we use reflection to see when such requests are fulfilled etc. We could have restructured the class itself (VolleyRequestQueue) to always be explicitly started/stopped and we could have added a counter for the number of requests pending, however this would make the usage of such a class annoying. The point of reflection here is that we do not have to do any of the above and the `RequestQueue` is still simple to use and it is testable!
+
+You should notice that I am using private variables that aren't very well documented within Volley such as `mRequestQueue` for `RequestQueue`. Whenever you need any such variables, a good practice is to look within Google source code (all of android is open source!). Bear in mind that any undocumented code may be subject to changes that are not announced and such practice might lead to hardship in upgrading libraries. That said, the current variable used is the basis of the whole `RequestQueue` class and is likely safe to use. Even so, it might be a good idea to maintain such a queue explicitly within your class (here `VolleyRequestQueue`) just to make sure that the behaviour of the class will not change without notice!
 
 ### The End
 
