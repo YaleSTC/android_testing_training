@@ -1,4 +1,4 @@
-package com.example.galery.samplegalery;
+package com.example.samplegallery;
 
 /**
  * Created by Stan on 12/22/16.

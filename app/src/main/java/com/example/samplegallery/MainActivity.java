@@ -1,4 +1,4 @@
-package com.example.galery.samplegalery;
+package com.example.samplegallery;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

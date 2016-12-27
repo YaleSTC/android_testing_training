@@ -1,4 +1,4 @@
-package com.example.galery.samplegalery.Utilities;
+package com.example.samplegallery.Utilities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

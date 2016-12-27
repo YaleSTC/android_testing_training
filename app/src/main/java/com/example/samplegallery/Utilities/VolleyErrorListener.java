@@ -1,4 +1,4 @@
-package com.example.galery.samplegalery.Utilities;
+package com.example.samplegallery.Utilities;
 
 import android.content.Context;
 import android.util.Log;

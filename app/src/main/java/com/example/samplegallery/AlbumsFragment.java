@@ -1,4 +1,4 @@
-package com.example.galery.samplegalery;
+package com.example.samplegallery;
 
 
 import android.net.Uri;
@@ -17,8 +17,8 @@ import android.widget.RelativeLayout;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.galery.samplegalery.Utilities.VolleyErrorListener;
-import com.example.galery.samplegalery.Utilities.VolleyRequestQueue;
+import com.example.samplegallery.Utilities.VolleyErrorListener;
+import com.example.samplegallery.Utilities.VolleyRequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
