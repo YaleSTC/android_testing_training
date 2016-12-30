@@ -3,15 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent" android:background="#dbdbdd">
 
-    <!--TROLOLO HUGE HACK! THE SPINNER NEVER STOPS SPINNING, BUT DOES GET COVERED UP! -->
-    <!--PERFORMANCE IS REALLY BAD HERE!-->
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@android:style/Widget.ProgressBar.Large"
         android:layout_centerInParent="true"/>
 
-    <com.android.volley.toolbox.NetworkImageView
+    <com.example.samplegallery.Utilities.CallbackNetworkImageView
         android:id="@+id/photo_blowup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

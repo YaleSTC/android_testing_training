@@ -1,7 +1,3 @@
-## SDMP android training - best practices, Volley and testing
-
-Throughout this tutorial we will be working with my sample implementation of [the simple gallery app](https://github.com/yalestc/training/blob/master/android.md) that you were asked to write up over the break. Before you start following any other instructions, please fork this github repository. All of the exercises should be based on the `master` branch.
-
 ### Preliminaries
 
 #### API keys
