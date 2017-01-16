@@ -7,7 +7,7 @@ import android.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader;
 
-class LruBitmapCache extends LruCache<String, Bitmap>
+public class LruBitmapCache extends LruCache<String, Bitmap>
         implements ImageLoader.ImageCache {
 
     /**
@@ -36,7 +36,7 @@ class LruBitmapCache extends LruCache<String, Bitmap>
     }
 
     // Make cache of size such that it may hold ~3 screens worth of images
-    static int getCacheSize(Context ctx) {
+    public static int getCacheSize(Context ctx) {
         final DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
         final int screenWidth = dm.widthPixels;
         final int screenHeight = dm.heightPixels;
