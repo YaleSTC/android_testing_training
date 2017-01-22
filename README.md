@@ -1,4 +1,4 @@
-## SDMP android training - best practices, Volley and testing
+﻿## SDMP android training - best practices, Volley and testing
 
 Throughout this tutorial we will be working with my sample implementation of [the simple gallery app](https://github.com/yalestc/training/blob/master/android.md) that you were asked to write up over the break. Before you start following any other instructions, please fork this github repository. All of the exercises should be based on the `master` branch.
 
@@ -65,7 +65,7 @@ SOLUTION: can be found on `SynchronizedNetworkImageView` branch. Please note tha
 
 ### Testing
 
-As explained during our earlier session, code testing is one of the most overlooked (at least during amateurish projects) and the most important parts of code development, since it makes sure that the code works and that there are no regressions caused by new code and features! Starting with the new Yale app we will be introducing Continuous Integration (the code will be built and tested for you before you are able to push / right after you push!) and rigorous guidelines for both unit and functional tests. While I will be taking care of CI, everyone must write good tests. In this part of the tutorial we will go over the basics of writting tests within the android framework. 
+As explained during our earlier session, code testing is one of the most overlooked (at least during amateurish projects) and the most important parts of code development, since it makes sure that the code works and that there are no regressions caused by new code and features! Starting with the new Yale app we will be introducing Continuous Integration (the code will be built and tested for you before you are able to push / right after you push!) and rigorous guidelines for both unit and functional tests. While I will be taking care of CI, everyone must write good tests. In this part of the tutorial we will go over the basics of writing tests within the android framework. 
 
 As with everything in Android, Google is your best friend and offers a bunch of good materials considering testing (some of which is really fresh -- 2016 or after).
 
@@ -76,20 +76,20 @@ Please follow the setup steps outlined [here](https://developer.android.com/trai
 #### Unit Tests
 Please read through this rather short document which outlines [how to write simple unit tests](https://developer.android.com/training/testing/unit-testing/local-unit-tests.html). We will use this knowledge to write a few simple tests for the `getCacheSize` method within `LruBitmapCache`. This should be simple and short, but will give you an idea of how such testing code looks like. 
 
-0. Make sure that you have set up the testing environment correctly (does the project compile and the dependencies are added?). You might have to clean resync gradle.
+0. Make sure that you have set up the testing environment correctly (does the project compile and the dependencies are added?). You might have to clean re sync gradle.
 1. Go to Android Studio and find the `com.example.samplegallery (test)` package. Take a look at the file present in it -- it defines the most basic template for writing unit tests. 
 2. Modify the file (or make a new one) named `LruBitmapCacheTest.java`. Notice the naming convention -- whenever you will be writing Java Classes (or even methods within existing classes), you will have to also write tests for what you have written! The names of files containing tests must be the same as the original file with "Test" added on. 
 3. Write a test for `LruBitmapCache.getCacheSize(Context mContext)`. Notice that you will have to
    * mock the `Context` object -- please use Mockito. 
    * mock chained methods. [This link](http://stackoverflow.com/a/13007960/7009520) should help you see how this is done.
    * NOTE: You might have a little trouble with access specifiers on the original `LruBitmapCache` class. That is to be expected - it is defined as "package local". Please modify the structure of the test file tree. That is, please make it look exactly the same as that of the project files (make Utilities package within the test files and place your test there). In general, this is the common practice: make you test-file-tree look exactly the same as the regular file tree! This makes it much easier to locate the relevant tests quickly.
-4. Run your tests by right clicking on the test package and clicking "run tests...". Your test, even if written correctly, should fail! There is a but in the LruBitmapCache class, please fix it! Assume that the comment above the tested function is correct.
+4. Run your tests by right clicking on the test package and clicking "run tests...". Your test, even if written correctly, should fail! There is a bug in the LruBitmapCache class, please fix it! Assume that the comment above the tested function is correct.
 
-Congratz! you've just written your first Android test! If you would like to compare your solution to mine, find it in `Testing` branch.
+Congrats! you've just written your first Android test! If you would like to compare your solution to mine, find it in `Testing` branch.
 
 Notice that up until now we have only tested a *non-static, public member function* which is almost the simplest test we could have written (well, we also mocked an object so I guess they get easier, but not by much). There are many other intricacies that come up when we test, of which the most important are:
 
-1. Testing private class members. Sometimes a class has a lot of private functions that must be tested (there seems to be a lot of conflict among Java (and not only) community as to whether private functions should be tested at all, how to structure code to avoid private methods etc., but here I just want to show you that this may be done). Testing such functions uses the most hated and loved feature of java: reflection. Let's take a look at how this is done. 
+1. Testing private class members. Sometimes a class has a lot of private functions that must be tested (there seems to be a lot of conflict among Java (and not only) community as to whether private functions should be tested at all, how to structure code to avoid private methods etc., but here I just want to show you that this may be done). Testing such functions uses the most hated and loved feature of Java: reflection. Let's take a look at how this is done. 
 
     * First, read this to understand [what the hell is reflection and why is it useful?](http://stackoverflow.com/questions/37628/what-is-reflection-and-why-is-it-useful). NOTE: The concept itself is super important and rather meta, but it is good to have a working understanding. If you'd like to dig deeper, you totally can using the Oracle articles on [reflection](http://docs.oracle.com/javase/tutorial/reflect/index.html) and [introspection](http://web.archive.org/web/20090226224821/http://java.sun.com/docs/books/tutorial/javabeans/introspection/index.html).
     * Second, read [this stack overflow post](http://stackoverflow.com/a/37632/7009520) explicitly showing you how to reflect to invoke (and so test) a private class function.
@@ -114,7 +114,7 @@ class MyTestClass {
 
    Of course, this example is silly but the problem is that one cannot simply mock the return value of `getInt()` without changing the code. This is one of the reasons static functions that are relevant to general logic of code are [considered harmful](https://testing.googleblog.com/2008/12/static-methods-are-death-to-testability.html), "bad taste" and in general an "anti-pattern."
 
-   Even so, sometimes we HAVE TO test such functions (for instance when we are dealing with legacy code that we don't want to refactor). To circumvent this problem, I will in general discourage you from writting static methods, but sometimes it is necesary (for instance when a 3rd party library uses such). We will deal with those using [PowerMockito](https://github.com/powermock/powermock/wiki/MockitoUsage) with simple code usage shown [here](http://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito). We will not exercise this now since this will come up very rarely and we will tackle these problems as they appear.
+   Even so, sometimes we HAVE TO test such functions (for instance when we are dealing with legacy code that we don't want to refactor). To circumvent this problem, I will in general discourage you from writing static methods, but sometimes it is necessary (for instance when a 3rd party library uses such). We will deal with those using [PowerMockito](https://github.com/powermock/powermock/wiki/MockitoUsage) with simple code usage shown [here](http://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito). We will not exercise this now since this will come up very rarely and we will tackle these problems as they appear.
 
 SOLUTION: `Testing` branch.
 
