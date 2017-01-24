@@ -80,8 +80,17 @@ Please read through this rather short document which outlines [how to write simp
 1. Go to Android Studio and find the `com.example.samplegallery (test)` package. Take a look at the file present in it -- it defines the most basic template for writing unit tests. 
 2. Modify the file (or make a new one) named `LruBitmapCacheTest.java`. Notice the naming convention -- whenever you will be writing Java Classes (or even methods within existing classes), you will have to also write tests for what you have written! The names of files containing tests must be the same as the original file with "Test" added on. 
 3. Write a test for `LruBitmapCache.getCacheSize(Context mContext)`. Notice that you will have to
-   * mock the `Context` object -- please use Mockito. 
-   * mock chained methods. [This link](http://stackoverflow.com/a/13007960/7009520) should help you see how this is done.
+   * mock the `Context` object -- please use Mockito. For a quick explanation of what mocks are and why we want to use them, see [this StackOverflow thread](http://stackoverflow.com/questions/3622455/what-is-the-purpose-of-mock-objects).
+   * mock chained methods. To do this, you must enable what is known as deep stubbing. This may be done using code similar to the following:
+
+	```
+		// allow deep stubbing
+		ClassIWantToMock mockObj = Mockito.mock(ClassIWantToMock.class, Mockito.RETURN_DEEP_STUBS);
+		// now we can deep stub like this!
+		when (mockObj.firstFunction().secondFunction())
+			.thenReturn(//whatever you want);
+	```
+
    * NOTE: You might have a little trouble with access specifiers on the original `LruBitmapCache` class. That is to be expected - it is defined as "package local". Please modify the structure of the test file tree. That is, please make it look exactly the same as that of the project files (make Utilities package within the test files and place your test there). In general, this is the common practice: make you test-file-tree look exactly the same as the regular file tree! This makes it much easier to locate the relevant tests quickly.
 4. Run your tests by right clicking on the test package and clicking "run tests...". Your test, even if written correctly, should fail! There is a bug in the LruBitmapCache class, please fix it! Assume that the comment above the tested function is correct.
 
