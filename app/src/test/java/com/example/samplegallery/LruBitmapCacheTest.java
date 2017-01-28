@@ -30,29 +30,9 @@ public class LruBitmapCacheTest {
     Context mockContext;
 
     // Solution when LruBitmapCache.getCacheSize is public
-    @Test
-    public void test()
-    {
-        Context mockContext = Mockito.mock(Context.class,Mockito.RETURNS_DEEP_STUBS);
-
-
-        DisplayMetrics mockedDisplaymetrics = new DisplayMetrics();
-
-        mockedDisplaymetrics.widthPixels = 4;
-        mockedDisplaymetrics.heightPixels = 5;
-
-        when(mockContext.getResources().getDisplayMetrics()).thenReturn(mockedDisplaymetrics);
-
-        int cachesize = LruBitmapCache.getCacheSize(mockContext);
-
-
-        assertThat(cachesize,is(240));
-
-    }
-
-    // For private getCacheSize method
 //    @Test
-//    public void test() throws NoSuchMethodException {
+//    public void test()
+//    {
 //        Context mockContext = Mockito.mock(Context.class,Mockito.RETURNS_DEEP_STUBS);
 //
 //
@@ -63,25 +43,47 @@ public class LruBitmapCacheTest {
 //
 //        when(mockContext.getResources().getDisplayMetrics()).thenReturn(mockedDisplaymetrics);
 //
-//        Method getCacheSize = null;
-//        try {
-//            getCacheSize = LruBitmapCache.class.getMethod("getCachSize",Context.class);
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        } catch (SecurityException e) {
-//            e.printStackTrace();
-//        }
-//
-//        int cachesize = 0;
-//        try {
-//            cachesize = (int) getCacheSize.invoke(LruBitmapCache.class,mockContext);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
+//        int cachesize = LruBitmapCache.getCacheSize(mockContext);
 //
 //
 //        assertThat(cachesize,is(240));
+//
+//    }
+
+    // For private getCacheSize method
+    @Test
+    public void test() throws NoSuchMethodException {
+        Context mockContext = Mockito.mock(Context.class, Mockito.RETURNS_DEEP_STUBS);
+
+
+        DisplayMetrics mockedDisplaymetrics = new DisplayMetrics();
+
+        mockedDisplaymetrics.widthPixels = 4;
+        mockedDisplaymetrics.heightPixels = 5;
+
+        when(mockContext.getResources().getDisplayMetrics()).thenReturn(mockedDisplaymetrics);
+
+        Method getCacheSize = null;
+        try {
+            getCacheSize = LruBitmapCache.class.getDeclaredMethod("getCacheSize", Context.class);
+            getCacheSize.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        int cachesize = 0;
+        try {
+            cachesize = (int) getCacheSize.invoke(LruBitmapCache.class, mockContext);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+
+        assertThat(cachesize, is(240));
 
     }
+}

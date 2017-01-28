@@ -36,7 +36,7 @@ public class LruBitmapCache extends LruCache<String, Bitmap>
     }
 
     // Make cache of size such that it may hold ~3 screens worth of images
-    public static int getCacheSize(Context ctx) {
+    static int getCacheSize(Context ctx) {
         final DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
         final int screenWidth = dm.widthPixels;
         final int screenHeight = dm.heightPixels;
