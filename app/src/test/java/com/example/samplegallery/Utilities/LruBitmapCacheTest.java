@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -36,6 +37,12 @@ public class LruBitmapCacheTest {
         Mockito.when(mMockContext.getResources().getDisplayMetrics()).thenReturn(dm);
 
 
-        assertThat(LruBitmapCache.getCacheSize(mMockContext), is(equalTo(dm.widthPixels*dm.heightPixels*4*3)));
+        Method method = LruBitmapCache.class.getDeclaredMethod("getCacheSize", Context.class);
+        method.setAccessible(true);
+        //method.invoke(mMockContext, null);
+
+        assertThat(
+                (int)(method.invoke(null, mMockContext)   ),
+                is(equalTo(dm.widthPixels*dm.heightPixels*4*3)));
     }
 }
