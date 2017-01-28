@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
+import java.lang.reflect.Method;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LruBitmapCacheTest {
@@ -30,6 +31,9 @@ public class LruBitmapCacheTest {
         when(mMockContext.getResources().getDisplayMetrics())
                 .thenReturn(mMockDisplayMetrics);
 
-        assertEquals(LruBitmapCache.getCacheSize(mMockContext), 6 * 10 * 3 * 4);
+        Method method = LruBitmapCache.class.getDeclaredMethod("getCacheSize", Context.class);
+        method.setAccessible(true);
+
+        assertEquals(method.invoke(null, mMockContext), 6 * 10 * 3 * 4);
     }
 }
