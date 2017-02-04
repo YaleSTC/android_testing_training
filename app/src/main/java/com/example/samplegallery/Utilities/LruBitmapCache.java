@@ -16,7 +16,7 @@ class LruBitmapCache extends LruCache<String, Bitmap>
      *                this is the maximum sum of the sizes of the entries in this cache.
      */
     LruBitmapCache(Context context) {
-        super(getCacheSize(context));
+        this(getCacheSize(context));
     }
     LruBitmapCache(int maxSize) {
         super(maxSize);

@@ -29,20 +29,18 @@ public class LruBitmapCacheTest {
 
         mMockContext = Mockito.mock(Context.class, Mockito.RETURNS_DEEP_STUBS);
 
-        DisplayMetrics dm = Mockito.mock(DisplayMetrics.class, Mockito.RETURNS_DEEP_STUBS);
+        DisplayMetrics dm = new DisplayMetrics();
 
         dm.widthPixels = 50;
         dm.heightPixels = 100;
 
         Mockito.when(mMockContext.getResources().getDisplayMetrics()).thenReturn(dm);
 
-
         Method method = LruBitmapCache.class.getDeclaredMethod("getCacheSize", Context.class);
         method.setAccessible(true);
-        //method.invoke(mMockContext, null);
 
         assertThat(
                 (int)(method.invoke(null, mMockContext)   ),
-                is(equalTo(dm.widthPixels*dm.heightPixels*4*3)));
+                is(equalTo(dm.widthPixels * dm.heightPixels * 4 * 3)));
     }
 }
