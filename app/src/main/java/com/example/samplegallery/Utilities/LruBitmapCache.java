@@ -15,6 +15,9 @@ class LruBitmapCache extends LruCache<String, Bitmap>
      *                the maximum number of entries in the cache. For all other caches,
      *                this is the maximum sum of the sizes of the entries in this cache.
      */
+    LruBitmapCache(Context context) {
+        this(getCacheSize(context));
+    }
     LruBitmapCache(int maxSize) {
         super(maxSize);
     }
@@ -36,7 +39,7 @@ class LruBitmapCache extends LruCache<String, Bitmap>
     }
 
     // Make cache of size such that it may hold ~3 screens worth of images
-    static int getCacheSize(Context ctx) {
+    private static int getCacheSize(Context ctx) {
         final DisplayMetrics dm = ctx.getResources().getDisplayMetrics();
         final int screenWidth = dm.widthPixels;
         final int screenHeight = dm.heightPixels;
