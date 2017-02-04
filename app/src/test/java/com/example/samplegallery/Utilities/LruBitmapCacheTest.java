@@ -1,15 +1,14 @@
 package com.example.samplegallery.Utilities;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.util.DisplayMetrics;
-
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
+import java.lang.reflect.Method;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.mockito.Mockito.when;
-import java.lang.reflect.Method;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LruBitmapCacheTest {
