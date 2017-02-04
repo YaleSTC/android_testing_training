@@ -35,6 +35,6 @@ public class LruBitmapCacheTest {
 
         Mockito.when(mMockContext.getResources().getDisplayMetrics()).thenReturn(dm);
 
-        assertThat(LruBitmapCache.getCacheSize(mMockContext), is(equalTo(dm.widthPixels*dm.heightPixels*4*3)));
+        assertThat(LruBitmapCache.getCacheSize(mMockContext), is(equalTo(dm.widthPixels*dm.heightPixels * 4 * 3)));
     }
 }
