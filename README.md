@@ -30,9 +30,9 @@ Briefly, go through the code consituting the application and play with it in a s
   
    Please ignore the "HUGE HACK" comment for now. We will come back to it a little bit later. 
 
-    What is the basic flaw of the way those layouts are written? How hard would it be to change all of the font sizes and their colors to something new? How about the padding around TextViews or ImageViews? Discuss the fix and implement it. For hints and tips see [this article](https://guides.codepath.com/android/Styles-and-Themes).
+   What is the basic flaw of the way those layouts are written? How hard would it be to change all of the font sizes and their colors to something new? How about the padding around TextViews or ImageViews? Discuss the fix and implement it. For hints and tips see [this article](https://guides.codepath.com/android/Styles-and-Themes).
 
-    SOLUTION: Focusing on controlling the styles of progress bars, find on `InStyle` branch. 
+   SOLUTION: Focusing on controlling the styles of progress bars, find on `InStyle` branch. 
 
 2. While reading the source code you have likely found that I often use `.getChildAt(int)` function to get a handle to "nested" resources. Why is this a bad idea and what should we use instead? 
 
@@ -57,7 +57,7 @@ Few years ago Google (2014 I think) has introduced the [Volley](https://develope
    * Using the [flickr api reference](https://www.flickr.com/services/api/), explain why it takes so long for the photo to download? There is a simple fix for this issue. What is it? Explain and implement. 
    * Even though the photo loads faster, the fact that the title and the description appear before the photo is rather annoying. Moreover, as you have notice before, and as the "HUGE HACK" comment within .xml files indicates, the progress bar that is visible at the beginning is never stopped. 
 
-        In short, there is no synchronization among the element of the layouts. This is a consequence of using NetworkImageView and relying on its simplicity. This may be relatively easily changed by [creating a class extending the NetworkImageView](http://stackoverflow.com/a/31280690/7009520) or by [using a regular ImageView instead](http://stackoverflow.com/a/20292782/7009520). Choose one of the two approaches (tell me why you think this one works best!) and stop the spinners "underneath" the photo thumbnails after the photo has been loaded. 
+      In short, there is no synchronization among the element of the layouts. This is a consequence of using NetworkImageView and relying on its simplicity. This may be relatively easily changed by [creating a class extending the NetworkImageView](http://stackoverflow.com/a/31280690/7009520) or by [using a regular ImageView instead](http://stackoverflow.com/a/20292782/7009520). Choose one of the two approaches (tell me why you think this one works best!) and stop the spinners "underneath" the photo thumbnails after the photo has been loaded. 
 
        NOTE: You totally can synchronize the photo blowup as well! It's only a few lines if you did the former part well!
 
@@ -83,30 +83,31 @@ Please read through this rather short document which outlines [how to write simp
    * mock the `Context` object -- please use Mockito. For a quick explanation of what mocks are and why we want to use them, see [this StackOverflow thread](http://stackoverflow.com/questions/3622455/what-is-the-purpose-of-mock-objects).
    * mock chained methods. To do this, you must enable what is known as deep stubbing. This may be done using code similar to the following:
 
-	```
+```
 		// allow deep stubbing
 		ClassIWantToMock mockObj = Mockito.mock(ClassIWantToMock.class, Mockito.RETURN_DEEP_STUBS);
 		// now we can deep stub like this!
 		when (mockObj.firstFunction().secondFunction())
 			.thenReturn(//whatever you want);
-	```
+```
 
    * NOTE: You might have a little trouble with access specifiers on the original `LruBitmapCache` class. That is to be expected - it is defined as "package local". Please modify the structure of the test file tree. That is, please make it look exactly the same as that of the project files (make Utilities package within the test files and place your test there). In general, this is the common practice: make you test-file-tree look exactly the same as the regular file tree! This makes it much easier to locate the relevant tests quickly.
 4. Run your tests by right clicking on the test package and clicking "run tests...". Your test, even if written correctly, should fail! There is a bug in the LruBitmapCache class, please fix it! Assume that the comment above the tested function is correct.
 
 Congrats! you've just written your first Android test! If you would like to compare your solution to mine, find it in `Testing` branch.
 
-Notice that up until now we have only tested a *non-static, public member function* which is almost the simplest test we could have written (well, we also mocked an object so I guess they get easier, but not by much). There are many other intricacies that come up when we test, of which the most important are:
+Notice that up until now we have only tested a static, public member function* which is almost the simplest test we could have written (well, we also mocked an object so I guess they get easier, but not by much). There are many other intricacies that come up when we test, of which the most important are:
 
 1. Testing private class members. Sometimes a class has a lot of private functions that must be tested (there seems to be a lot of conflict among Java (and not only) community as to whether private functions should be tested at all, how to structure code to avoid private methods etc., but here I just want to show you that this may be done). Testing such functions uses the most hated and loved feature of Java: reflection. Let's take a look at how this is done. 
 
     * First, read this to understand [what the hell is reflection and why is it useful?](http://stackoverflow.com/questions/37628/what-is-reflection-and-why-is-it-useful). NOTE: The concept itself is super important and rather meta, but it is good to have a working understanding. If you'd like to dig deeper, you totally can using the Oracle articles on [reflection](http://docs.oracle.com/javase/tutorial/reflect/index.html) and [introspection](http://web.archive.org/web/20090226224821/http://java.sun.com/docs/books/tutorial/javabeans/introspection/index.html).
-    * Second, read [this stack overflow post](http://stackoverflow.com/a/37632/7009520) explicitly showing you how to reflect to invoke (and so test) a private class function.
-    * Now, change the modifier of the `getCacheSize(Context)` function within `LruBitmapCache` to `private`. Modify the tests written before and make sure that they works. 
+    * Second, read [this stack overflow post](http://stackoverflow.com/questions/34571/how-do-i-test-a-class-that-has-private-methods-fields-or-inner-classes) explicitly showing you how to reflect to invoke (and so test) a private class function.
+    * Now, change the modifier of the `getCacheSize(Context)` function within `LruBitmapCache` to `private`. Modify the tests written before and make sure that they work.
+    * Make sure to change other files that are affected by this change! (Make a new constructor exists that makes use of getCacheSize "under the covers). 
 
-    Congrats! You know how to test private member functions! Throughout the discussion above I have lied to you a little bit. Reflection is in fact not the ONLY way to test private methods, but it is by far the most preferred method within Android. If you would like to read on the other existing methods in general Java settings, please see [this article](http://www.artima.com/suiterunner/privateP.html). It uses suiterunner with JUnit, but the principles are sound.
+    Congrats! You know how to test private (static) member functions! Throughout the discussion above I have lied to you a little bit. Reflection is in fact not the ONLY way to test private methods, but it is by far the most preferred method within Android. If you would like to read on the other existing methods in general Java settings, please see [this article](http://www.artima.com/suiterunner/privateP.html). It uses suiterunner with JUnit, but the principles are sound.
 
-2. Testing static member function. In general, static functions are tested in the exact same way as any other function. The problem arises when a static member function is used within a different function and we would like to mock the return value from such a member function. For instance, if we have:
+2. Testing static member functions. In general, static functions are tested in the exact same way as any other function. The problem arises when a static member function is used within a different function and we would like to mock the return value from such a member function. For instance, if we have:
 
 ``` 
 class MyTestClass {
@@ -121,7 +122,7 @@ class MyTestClass {
 }
 ```
 
-   Of course, this example is silly but the problem is that one cannot simply mock the return value of `getInt()` without changing the code. This is one of the reasons static functions that are relevant to general logic of code are [considered harmful](https://testing.googleblog.com/2008/12/static-methods-are-death-to-testability.html), "bad taste" and in general an "anti-pattern."
+   Of course, this example is silly but the problem is that one cannot simply mock the return value of `getInt()` without changing the code. This is one of the reasons static functions that are relevant to general logic of code are [considered harmful](https://testing.googleblog.com/2008/12/static-methods-are-death-to-testability.html), "bad taste" and in general an "anti-pattern." In general, any static function which "injects logic" into any other part of the code is bad. r
 
    Even so, sometimes we HAVE TO test such functions (for instance when we are dealing with legacy code that we don't want to refactor). To circumvent this problem, I will in general discourage you from writing static methods, but sometimes it is necessary (for instance when a 3rd party library uses such). We will deal with those using [PowerMockito](https://github.com/powermock/powermock/wiki/MockitoUsage) with simple code usage shown [here](http://stackoverflow.com/questions/21105403/mocking-static-methods-with-mockito). We will not exercise this now since this will come up very rarely and we will tackle these problems as they appear.
 
