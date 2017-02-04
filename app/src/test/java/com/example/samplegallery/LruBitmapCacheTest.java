@@ -29,7 +29,7 @@ public class LruBitmapCacheTest {
     @Mock
     Context mockContext;
 
-    // Solution when LruBitmapCache.getCacheSize is public
+//     Solution when LruBitmapCache.getCacheSize is public
 //    @Test
 //    public void test()
 //    {
@@ -50,7 +50,7 @@ public class LruBitmapCacheTest {
 //
 //    }
 
-    // For private getCacheSize method
+     //For private getCacheSize method
     @Test
     public void test() throws NoSuchMethodException {
         Context mockContext = Mockito.mock(Context.class, Mockito.RETURNS_DEEP_STUBS);

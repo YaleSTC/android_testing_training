@@ -23,9 +23,15 @@ public class VolleyRequestQueue {
         mContext = context.getApplicationContext();
         reqQueue = getRequestQueue();
 
+//        USE for public testing version
+//        imgLoader = new ImageLoader(
+//                reqQueue,
+//                new LruBitmapCache(LruBitmapCache.getCacheSize(context)));
+
+        // USE for private testing version
         imgLoader = new ImageLoader(
                 reqQueue,
-                new LruBitmapCache(LruBitmapCache.getCacheSize(context)));
+                new LruBitmapCache(context));
     }
 
     private RequestQueue getRequestQueue() {
