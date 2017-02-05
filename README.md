@@ -106,6 +106,8 @@ Notice that up until now we have only tested a static, public member function* w
     * Make sure to change other files that are affected by this change! (Make a new constructor exists that makes use of getCacheSize "under the covers). 
 
     Congrats! You know how to test private (static) member functions! Throughout the discussion above I have lied to you a little bit. Reflection is in fact not the ONLY way to test private methods, but it is by far the most preferred method within Android. If you would like to read on the other existing methods in general Java settings, please see [this article](http://www.artima.com/suiterunner/privateP.html). It uses suiterunner with JUnit, but the principles are sound.
+    
+    Solutions: Please see the `Private_Testing` branch.
 
 2. Testing static member functions. In general, static functions are tested in the exact same way as any other function. The problem arises when a static member function is used within a different function and we would like to mock the return value from such a member function. For instance, if we have:
 
