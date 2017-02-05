@@ -15,20 +15,13 @@
         android:padding="20sp">
 
         <ProgressBar
-            style="@android:style/Widget.ProgressBar.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="5sp" />
+            style="@style/LargeProgressBar"/>
 
         <TextView
+            style="@style/TextView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:gravity="center"
-            android:paddingLeft="20sp"
-            android:text="Please wait. Loading Your Content..."
-            android:textSize="20sp" />
+            android:text="Please wait. Loading Your Content..." />
 
     </LinearLayout>
 </RelativeLayout>
