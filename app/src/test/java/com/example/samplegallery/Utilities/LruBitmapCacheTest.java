@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.lang.reflect.Method;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
@@ -35,7 +37,10 @@ public class LruBitmapCacheTest {
         when (mContextMock.getResources().getDisplayMetrics())
                 .thenReturn(mockDisplayMetrics);
 
+        Method testedMethod = LruBitmapCache.class.getDeclaredMethod("getCacheSize", Context.class);
+        testedMethod.setAccessible(true);
+
         // finally check the assertion.
-        assertThat(LruBitmapCache.getCacheSize(mContextMock), is(4 * 5 * 3 * 4));
+        assertThat((int) testedMethod.invoke(null, mContextMock), is(4 * 5 * 3 * 4));
     }
 }
