@@ -11,11 +11,11 @@
         style="@android:style/Widget.ProgressBar.Small"
         android:layout_centerInParent="true"/>
 
-    <com.android.volley.toolbox.NetworkImageView
+    <com.example.samplegallery.ManagedNetworkImageView
         android:id="@+id/photos_within_album_img_view"
         android:layout_width="100sp"
         android:layout_height="100sp"
-        android:padding="5sp"
+        style = "@style/padding"
         android:scaleType="centerCrop"/>
 
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.android.volley.Request;
@@ -118,7 +119,12 @@ public class PhotosWithinAlbumFragment extends Fragment {
                                     rootView = (RelativeLayout) convertView;
                                 }
 
-                                NetworkImageView img = (NetworkImageView) rootView.getChildAt(1);
+                                ProgressBar gridSpinners = (ProgressBar) rootView.getChildAt(0);
+
+                                ManagedNetworkImageView img = (ManagedNetworkImageView) rootView.getChildAt(1);
+
+                                img.setProgressBar(gridSpinners);
+
                                 img.setImageDrawable(null);
                                 img.setImageUrl(
                                         photosInfo.get(position).first,

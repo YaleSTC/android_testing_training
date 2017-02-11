@@ -8,4 +8,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name = "FFFFFF">
+        <item name = "android:textColor">#FFFFFF</item>
+        <item name = "android:layout_width">match_parent</item>
+        <item name = "android:layout_height">wrap_content</item>
+    </style>
+
+    <style name = "padding">
+        <item name = "android:padding">5sp</item>>
+    </style>
+
+
 </resources>

@@ -86,7 +86,7 @@ public class PhotoBlowupFragment extends Fragment {
                         try {
                             sizes = response.getJSONObject("sizes").getJSONArray("size");
                             photoUrl = sizes
-                                    .getJSONObject(sizes.length() - 1)
+                                    .getJSONObject(sizes.length() - 6)
                                     .getString("source");
                         } catch (JSONException e) {
                             e.printStackTrace();
