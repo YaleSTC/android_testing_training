@@ -10,5 +10,5 @@ package com.example.samplegallery;
  * keys publically!
  */
 public class APIKeys {
-    public static final String FLICKR_API_KEY = "64ffdc1fd4b18211f4f98513848d2335";
+    public static final String FLICKR_API_KEY = "b189cbcb6aeea9a8ae5d0a10ec002496";
 }

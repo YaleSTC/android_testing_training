@@ -8,10 +8,11 @@
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/blowup_progress_bar"
         style="@android:style/Widget.ProgressBar.Large"
         android:layout_centerInParent="true"/>
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/photo_blowup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
