@@ -50,7 +50,7 @@ public class PhotoBlowupFragment extends Fragment {
         final ImageView img = (ImageView) rootView.findViewById(R.id.photo_blowup);
         final TextView photoTitleView = (TextView) rootView.findViewById(R.id.photo_title);
         final TextView photoDescriptionView = (TextView) rootView.findViewById(R.id.photo_description);
-        final ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.blowup_progress_bar);
+        final ProgressBar progressSpinner = (ProgressBar) rootView.findViewById(R.id.blowup_progress_bar);
         // / create a request for photo title
         JsonObjectRequest photoInfoRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -90,24 +90,27 @@ public class PhotoBlowupFragment extends Fragment {
                         try {
                             sizes = response.getJSONObject("sizes").getJSONArray("size");
                             photoUrl = sizes
-                                    .getJSONObject(sizes.length() - 3) //finding a smaller size will speed up load times
+                                    .getJSONObject(sizes.length() - 1) //finding a smaller size will speed up load times
                                     .getString("source");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        //isnt onResponse on the uithread? would moving it off the main thread speed things up? would it be possible to?
+
+
                         Response.Listener<Bitmap> imgListener = new Response.Listener<Bitmap>() {
                             @Override
                             public void onResponse(Bitmap response) {
                                 img.setImageBitmap(response);
                                 photoDescriptionView.setVisibility(View.VISIBLE);
                                 photoTitleView.setVisibility(View.VISIBLE);
-                                progressBar.setVisibility(View.GONE);
+                                progressSpinner.setVisibility(View.GONE); //removes the progress spinner from the background
                             }
                         };
                         Response.ErrorListener errorListener = new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                //things2
+                                error.printStackTrace();
                             }
                         };
                         //solution is deprecated: better, worse or equivalent to hacky?

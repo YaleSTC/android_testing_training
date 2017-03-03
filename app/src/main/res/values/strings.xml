@@ -2,4 +2,5 @@
     <string name="app_name">SampleGallery</string>
     <string name="flickr_base_url">https://api.flickr.com/services/rest/?</string>
     <string name="yale_album_id">12208415@N08</string>
+    <string name="desc">fullscreen photo</string>
 </resources>
