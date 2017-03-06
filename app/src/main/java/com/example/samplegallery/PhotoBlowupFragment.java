@@ -1,5 +1,6 @@
 package com.example.samplegallery;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,13 +8,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.samplegallery.Utilities.VolleyErrorListener;
 import com.example.samplegallery.Utilities.VolleyRequestQueue;
 
@@ -43,11 +47,11 @@ public class PhotoBlowupFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         RelativeLayout rootView = (RelativeLayout) inflater.
                 inflate(R.layout.photo_blowup_fragment, container, false);
-        final NetworkImageView img = (NetworkImageView) rootView.findViewById(R.id.photo_blowup);
+        final ImageView img = (ImageView) rootView.findViewById(R.id.photo_blowup);
         final TextView photoTitleView = (TextView) rootView.findViewById(R.id.photo_title);
-        final TextView photoDescriptionView =
-                (TextView) rootView.findViewById(R.id.photo_description);
-        // create a request for photo title
+        final TextView photoDescriptionView = (TextView) rootView.findViewById(R.id.photo_description);
+        final ProgressBar progressBar = (ProgressBar) rootView.findViewById(R.id.blowup_progress_bar);
+        // / create a request for photo title
         JsonObjectRequest photoInfoRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 getPhotosInfoUrl(),
@@ -86,16 +90,29 @@ public class PhotoBlowupFragment extends Fragment {
                         try {
                             sizes = response.getJSONObject("sizes").getJSONArray("size");
                             photoUrl = sizes
-                                    .getJSONObject(sizes.length() - 1)
+                                    .getJSONObject(sizes.length() - 3) //finding a smaller size will speed up load times
                                     .getString("source");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-                        // finally set the url for the image
-                        img.setImageUrl(
-                                photoUrl,
-                                VolleyRequestQueue.getInstance(getContext()).getImgLoader());
+                        Response.Listener<Bitmap> imgListener = new Response.Listener<Bitmap>() {
+                            @Override
+                            public void onResponse(Bitmap response) {
+                                img.setImageBitmap(response);
+                                photoDescriptionView.setVisibility(View.VISIBLE);
+                                photoTitleView.setVisibility(View.VISIBLE);
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        };
+                        Response.ErrorListener errorListener = new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //things2
+                            }
+                        };
+                        //solution is deprecated: better, worse or equivalent to hacky?
+                        ImageRequest getImgReq = new ImageRequest(photoUrl, imgListener, 0,0,null,errorListener);
+                        VolleyRequestQueue.getInstance(getContext()).addToRequestQueue(getImgReq);
                     }
                 },
                 new VolleyErrorListener(getContext())
